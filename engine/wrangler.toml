@@ -1,0 +1,20 @@
+name = "awshk-frontdesk-api"
+account_id = "28a249f75ae53650fe079530952d8227"
+main = "src/worker.ts"
+compatibility_date = "2026-04-27"
+compatibility_flags = ["nodejs_compat"]
+
+# The 45 policies and the structured facts ship as a bundled JSON import, so a cold start
+# has the centre's data without a network call. Only mutable state lives in D1.
+[[d1_databases]]
+binding = "DB"
+database_name = "awshk_frontdesk_state"
+database_id = "5b8e8c39-f17a-4151-bd6d-04c6e28a0869"
+
+[vars]
+SPONSOR_SNYK = "FALLBACK"
+SPONSOR_PRELINT = "FALLBACK"
+SPONSOR_ROCKETRIDE = "FALLBACK"
+SPONSOR_MASKY = "FALLBACK"
+N8N_WEBHOOK_URL = ""
+# GEMINI_API_KEY is set per-environment, never committed. See README.

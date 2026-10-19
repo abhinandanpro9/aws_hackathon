@@ -1,0 +1,1123 @@
+{
+  "_meta": {
+    "note": "FICTIONAL. Invented center, policies, staff, rates, and families. No real personal data. Policy SHAPES are modelled on the City of Albuquerque DCFD Family Handbook (April 2019); none of its specific numbers, names, or contacts are reused except where they reflect standard state licensing practice.",
+    "version": "2026-08-24",
+    "handbook_revision": "August 2026",
+    "two_sources": "TWO SHAPES, NOT EIGHT. (1) policies[] -- one uniform shape for every prose answer: question, answer, labels, sensitive, owner, reference, notes. (2) Structured blocks -- hours, closures, tours, illness -- kept as fields because code computes over them: per-room times, an ordered exclusion ladder, a queryable date list. Rule of thumb: if an operator would reword a sentence it is a policy; if code has to calculate something from it, it stays structured.",
+    "ids": "Every policy and every structured block carries a uuid and a version. A citation pins id@version, so an answer quoting wording an operator has since edited is refused rather than shown to a parent."
+  },
+  "center": {
+    "name": "Sunflower Grove Early Learning Center",
+    "short_name": "Sunflower Grove",
+    "address": "418 Ashgrove Lane, Fairmont, OR 97402",
+    "phone": "(541) 555-0142",
+    "email": "hello@sunflowergrove.example",
+    "timezone": "America/Los_Angeles",
+    "license_number": "OR-CC-2026-4418",
+    "licensed_capacity": 84,
+    "accreditation": "NAEYC accredited (renewed March 2026)",
+    "school_year": "2026-2027"
+  },
+  "staff": [
+    {
+      "id": "dir-1",
+      "name": "Rosa Delgado",
+      "role": "Center Director",
+      "handles": [
+        "enrollment",
+        "billing",
+        "sensitive",
+        "closures"
+      ],
+      "phone": "(541) 555-0142",
+      "ext": "1"
+    },
+    {
+      "id": "adm-1",
+      "name": "Priya Raman",
+      "role": "Enrollment Coordinator",
+      "handles": [
+        "enrollment",
+        "tours",
+        "closures"
+      ],
+      "phone": "(541) 555-0142",
+      "ext": "2"
+    },
+    {
+      "id": "hlt-1",
+      "name": "Dana Whitfield",
+      "role": "Health & Safety Lead",
+      "handles": [
+        "illness",
+        "medication",
+        "allergy"
+      ],
+      "phone": "(541) 555-0142",
+      "ext": "3"
+    }
+  ],
+  "programs": [
+    {
+      "id": "infant",
+      "name": "Infant Room",
+      "age_min_months": 6,
+      "age_max_months": 17,
+      "ratio": "1:4",
+      "capacity": 12,
+      "program_hours": {
+        "open": "07:30",
+        "close": "17:30"
+      },
+      "notes": "Rolling enrollment. Waitlist is typical."
+    },
+    {
+      "id": "toddler",
+      "name": "Toddler Room",
+      "age_min_months": 18,
+      "age_max_months": 35,
+      "ratio": "1:5",
+      "capacity": 20,
+      "program_hours": {
+        "open": "07:30",
+        "close": "17:30"
+      },
+      "notes": "Toilet learning plan created with families as readiness appears."
+    },
+    {
+      "id": "preschool",
+      "name": "Preschool",
+      "age_min_months": 36,
+      "age_max_months": 59,
+      "ratio": "1:10",
+      "capacity": 32,
+      "program_hours": {
+        "open": "08:00",
+        "close": "15:00"
+      },
+      "extended_care": {
+        "before": {
+          "open": "07:30",
+          "close": "08:00"
+        },
+        "after": {
+          "open": "15:00",
+          "close": "17:30"
+        }
+      },
+      "notes": "Core program is 8:00-15:00. Extended care is billed separately."
+    },
+    {
+      "id": "prek",
+      "name": "Pre-K",
+      "age_min_months": 48,
+      "age_max_months": 71,
+      "ratio": "1:10",
+      "capacity": 20,
+      "eligibility": "Must be 4 years old by September 1, 2026.",
+      "program_hours": {
+        "open": "08:00",
+        "close": "14:30"
+      },
+      "extended_care": {
+        "before": {
+          "open": "07:30",
+          "close": "08:00"
+        },
+        "after": {
+          "open": "14:30",
+          "close": "17:30"
+        }
+      },
+      "notes": "State-funded seats are limited and allocated by the Enrollment Coordinator."
+    }
+  ],
+  "hours": {
+    "center_open": "07:30",
+    "center_close": "17:30",
+    "days": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday"
+    ],
+    "weekend": "Closed Saturday and Sunday.",
+    "front_desk_staffed": {
+      "open": "07:30",
+      "close": "17:30"
+    },
+    "title": "Opening and closing times",
+    "kind": "structured_facts",
+    "owner_id": "dir-1",
+    "note_for_operator": "Per-room opening and closing times, including extended care. Answers are computed from these fields, so a room time is changed here and every reply follows.",
+    "last_reviewed": "2026-08-12",
+    "reviewed_by": "Rosa Delgado",
+    "id": "1ca920bf-979d-41ad-8d67-aa87855ea096",
+    "cite_as": "center:hours"
+  },
+  "closures": {
+    "policy": "The center is closed on the observed federal holidays listed below, and at weekends. These dates are the full closure list for the year.",
+    "published_holidays_2026_2027": [
+      {
+        "date": "2026-09-07",
+        "name": "Labor Day"
+      },
+      {
+        "date": "2026-11-26",
+        "name": "Thanksgiving Day"
+      },
+      {
+        "date": "2026-11-27",
+        "name": "Day after Thanksgiving"
+      },
+      {
+        "date": "2026-12-24",
+        "name": "Christmas Eve"
+      },
+      {
+        "date": "2026-12-25",
+        "name": "Christmas Day"
+      },
+      {
+        "date": "2027-01-01",
+        "name": "New Year's Day"
+      },
+      {
+        "date": "2027-05-31",
+        "name": "Memorial Day"
+      },
+      {
+        "date": "2027-07-05",
+        "name": "Independence Day (observed)"
+      }
+    ],
+    "weather": {
+      "policy": "Sunflower Grove follows the Fairmont School District announcement for snow closures and delays.",
+      "owner": "Fairmont School District",
+      "note": "On a two-hour delay the center opens at 09:30 and breakfast is not served.",
+      "owner_id": "adm-1"
+    },
+    "title": "Closure dates and weather",
+    "kind": "structured_facts",
+    "owner_id": "adm-1",
+    "note_for_operator": "Published holiday dates, the weekend rule, and the weather owner. This list is the authority: a weekday not on it is an open day.",
+    "last_reviewed": "2026-08-12",
+    "reviewed_by": "Rosa Delgado",
+    "id": "40c14e00-6d2e-4445-a465-ce17d61c68a9",
+    "cite_as": "center:closures"
+  },
+  "illness": {
+    "exclusion_criteria": [
+      {
+        "id": "fever",
+        "kind": "temperature_at_or_above",
+        "field": "temperatureF",
+        "also_field": "hoursSinceFeverBroke",
+        "threshold_f": 100.4,
+        "clear_after_hours": 24,
+        "rule": "Fever of 100.4F or higher, or any fever within the last 24 hours",
+        "reason": "A temperature of 100.4F or higher, or any fever in the last 24 hours, means staying home.",
+        "model_hint": "The child's temperature in Fahrenheit, if the parent gave a number.",
+        "also_model_hint": "Hours since a fever ended, if the parent said the fever has passed."
+      },
+      {
+        "id": "vomiting",
+        "kind": "hours_since_within",
+        "field": "hoursSinceVomiting",
+        "clear_after_hours": 24,
+        "rule": "Vomiting within the last 24 hours",
+        "reason": "Vomiting within the last 24 hours means staying home.",
+        "model_hint": "Hours since the child last vomited."
+      },
+      {
+        "id": "diarrhea",
+        "kind": "hours_since_within",
+        "field": "hoursSinceDiarrhea",
+        "clear_after_hours": 24,
+        "rule": "Diarrhea within the last 24 hours",
+        "reason": "Diarrhea within the last 24 hours means staying home.",
+        "model_hint": "Hours since the child last had diarrhea."
+      },
+      {
+        "id": "antibiotics",
+        "kind": "hours_since_below",
+        "field": "hoursOnAntibiotics",
+        "clear_after_hours": 24,
+        "rule": "On antibiotics for less than 24 hours",
+        "reason": "A child needs a full 24 hours on antibiotics before returning.",
+        "model_hint": "Hours the child has been taking antibiotics."
+      },
+      {
+        "id": "pink_eye",
+        "kind": "flag_is_true",
+        "flag": "suspectedPinkEye",
+        "requires_note": true,
+        "rule": "Pink eye, or symptoms that may be pink eye",
+        "reason": "Pink eye, or anything that might be pink eye, needs to be seen by a doctor first.",
+        "model_hint": "True if the parent describes pink, itchy, or crusted eyes."
+      },
+      {
+        "id": "rash",
+        "kind": "flag_is_true",
+        "flag": "undiagnosedRash",
+        "requires_note": true,
+        "rule": "Undiagnosed rash",
+        "reason": "An undiagnosed rash needs to be seen by a doctor first.",
+        "model_hint": "True if the parent describes a rash no doctor has looked at."
+      },
+      {
+        "id": "contagious",
+        "kind": "flag_is_true",
+        "flag": "contagiousSymptoms",
+        "requires_note": true,
+        "rule": "Symptoms of a contagious illness such as chicken pox, ringworm, strep, or crusted or oozing sores",
+        "reason": "Symptoms of a contagious illness need to be seen by a doctor first.",
+        "model_hint": "True for chicken pox, ringworm, strep, or oozing sores."
+      },
+      {
+        "id": "persistent_cough",
+        "kind": "flag_is_true",
+        "flag": "persistentCough",
+        "rule": "Cough that does not settle enough to rest at nap time",
+        "reason": "A cough that will not settle enough to rest at nap time means staying home.",
+        "model_hint": "True if the parent describes a cough that will not settle."
+      },
+      {
+        "id": "not_participating",
+        "kind": "flag_is_true",
+        "flag": "cannotParticipate",
+        "rule": "Not well enough to take part in the day, including outdoor play",
+        "reason": "A child who is not well enough to join the day, including outdoor play, should rest at home.",
+        "model_hint": "True if the child seems too unwell to join the day."
+      }
+    ],
+    "return_policy": "Your child may return once they have been free of the symptom for 24 hours without medication. A note from a doctor is required after hospitalisation, emergency care, or any illness we asked you to have diagnosed.",
+    "notify": "Please call the center by 08:30 if your child will be absent.",
+    "title": "When a child stays home",
+    "kind": "decision_rule",
+    "owner_id": "hlt-1",
+    "note_for_operator": "The exclusion ladder. Order matters: the first criterion that applies is the reason the parent reads. Each answer cites the criterion that decided it, as rule:attendance:<criterion>. ORDER MATTERS: first match wins, so the reason a parent reads is the first one that applies. 'kind' picks the comparison; everything else is editable by an operator. model_hint tells the model WHEN to fill a field. rule/reason are written for a parent to read; this is written for the model to act on. Editing it changes model behaviour.",
+    "last_reviewed": "2026-08-12",
+    "reviewed_by": "Rosa Delgado",
+    "id": "21a38990-6960-44e6-a909-47755bd0f36b",
+    "cite_as": "rule:attendance"
+  },
+  "tours": {
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "times": [
+      "09:30",
+      "13:30"
+    ],
+    "duration_minutes": 30,
+    "booking_owner": "adm-1",
+    "title": "Tours",
+    "kind": "structured_facts",
+    "owner_id": "adm-1",
+    "note_for_operator": "Tour days, times and duration. Booking is never done by the front desk. Structured so the rule reads fields, never a sentence. Operator-editable.",
+    "last_reviewed": "2026-08-12",
+    "reviewed_by": "Rosa Delgado",
+    "id": "ece45dcf-910d-4e1e-9a48-b752fb242535",
+    "cite_as": "center:tours"
+  },
+  "sensitive_topics": {
+    "note": "Never answered automatically, at any confidence. The model reads the message and routes it; every tool refuses these topics, so a model that fails to escalate still cannot produce an answer.",
+    "topics": [
+      {
+        "id": "custody",
+        "description": "Custody, separation, court orders, or one parent asking about another. Not for routine late-pickup times or late fees -- those are policy lookups.",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "injury",
+        "description": "An injury, accident, or incident report involving a child",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "behaviour",
+        "description": "Biting, hitting, behaviour plans, suspension, or disenrollment",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "child_safety",
+        "description": "Any suspicion of harm or neglect, or a mandated-reporter matter",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "allergy_medical",
+        "description": "A specific child's allergy, medication, or medical condition",
+        "route_to": "hlt-1"
+      },
+      {
+        "id": "other_child",
+        "description": "A question about another family's child",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "staff_conduct",
+        "description": "A concern or complaint about a staff member",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "unsafe_pickup",
+        "description": "Concern about an adult's ability to safely collect a child. Not for late-pickup fee or schedule questions.",
+        "route_to": "dir-1"
+      },
+      {
+        "id": "billing_dispute",
+        "description": "A disputed charge, refund, or financial hardship",
+        "route_to": "dir-1"
+      }
+    ]
+  },
+  "escalation": {
+    "default_owner": "dir-1",
+    "message_to_parent": "I do not want to guess on this one. I have passed it to {name}, {role}, and they will get back to you. If it is urgent, call {phone}{ext}.",
+    "hours_note": "Messages sent after 17:30 are picked up the next weekday morning."
+  },
+  "policies": [
+    {
+      "id": "b0043a95-f687-4842-85f4-3623d9e3b8e8",
+      "version": 1,
+      "text": "Nothing to do. Meals are always provided, so a forgotten lunch is never a problem. Today's menu is on the lobby board.",
+      "labels": [
+        "food",
+        "meals"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, Page 8, MEALS AND FOOD",
+      "notes": "Parents ask this most often in the first term.",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "af00dd8b-aae8-4674-a782-cf8a2f7dcd2f",
+      "version": 1,
+      "text": "Only people on your written pickup list may collect your child. We check photo ID every time, including people we know. Please do not take it personally.",
+      "labels": [
+        "pickup",
+        "arrival"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, Page 11, ARRIVAL AND PICKUP",
+      "notes": "The ID check is not negotiable, even for people staff recognise.",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "4abe7e1d-24d3-4d24-892f-e032c66b4a33",
+      "version": 1,
+      "text": "We can give medication with a signed permission form naming the child, the medication, the dose, and the times.",
+      "labels": [
+        "medication",
+        "health"
+      ],
+      "sensitive": true,
+      "owner_id": "hlt-1",
+      "reference": "Family Handbook, Page 14, MEDICATION",
+      "notes": "Any question about a SPECIFIC child dose goes to the Health Lead, never answered here.",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "e2d0ce6d-8426-4f12-bd55-4d81ca276558",
+      "version": 1,
+      "text": "Rest time is 12:30-14:30. Non-sleepers do quiet activities.",
+      "labels": [
+        "nap"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, Page 16, THE DAY",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "b38ee7b1-62cd-47e9-a92f-832b25456304",
+      "version": 1,
+      "text": "Call or message by 08:30 on any day your child will be out.",
+      "labels": [
+        "attendance",
+        "absence"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, Page 12, ATTENDANCE",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "ee164840-b105-4376-a56c-9e3685755716",
+      "version": 1,
+      "text": "Naps and rest time are essential for the healthy development of young children and are required by child care licensing regulations. The DCFD centers promote the development and enhance the learning of each child. Young children learn through activity – through moving, exploring and acting on objects. Because the children who attend our centers are so active, a period of rest is necessary.",
+      "labels": [
+        "nap"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NAPS AND REST TIME (line 598)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "6ca1a0d0-73f7-4858-b83e-e9c74c958536",
+      "version": 1,
+      "text": "New research suggests that nap/rest time is crucial to young children’s brain development and that without them; a child’s physical and psychological development can suffer. A nap/rest time offers a break from stimuli and allows a child to recharge for further activity. Naps help calm children because the stress hormone cortisol dips during sleep. Without this drop in cortisol, a child is likely to become fretful and impatient in response to minor frustrations. The rest allows the child to absorb new information better. Our teaching staff creates an atmosphere for rest – a quiet, darkened room withsleep mats for each child. We recognize that there are individual differences in the amount of rest/sleep children need and these differences are respected as much as possible.",
+      "labels": [
+        "nap"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NAPS AND REST TIME (line 598)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "5f677c45-4be2-484b-ad41-eb59f13a3208",
+      "version": 1,
+      "text": "We encourage parents to help children understand that nap time is part of their day at the center. The children who do not fall asleep may rest quietly. Many children sleep after an active morning. After a nap or rest period, children are happier, more content and ready to participate in learning activities. Parents may bring a small blanket and small pillow for their child which will be sent home to be laundered weekly.",
+      "labels": [
+        "nap"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NAPS AND REST TIME (line 598)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "c8fbfcd4-e7e3-415b-aa4f-7518511b231e",
+      "version": 1,
+      "text": " Infant schedules will differ and are based on individual needs.  Infants nap and eat on demand.",
+      "labels": [
+        "nap"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NAPS AND REST TIME (line 598)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "9e4395a9-f930-4910-91f8-aa4f8b14f882",
+      "version": 1,
+      "text": "All Teaching staff are sensitive to individual family traditions and culture. We are committed to respecting family preferences regarding celebrations and encourage parent participation and invite parents to share. Our teachers develop and implement age-appropriate activities that reflect local community and regional celebrations such as balloon fiesta, fall harvest and other seasonal winter, spring and summer events. Our intent is to give children opportunities to experience and learn about relevant aspects about New Mexico, American culture and other cultures.",
+      "labels": [
+        "celebrations"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, HOLIDAYS AND CELEBRATIONS (line 624)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "c040d235-86f8-41a3-bc31-7c9acb3a91cf",
+      "version": 1,
+      "text": "The CDCs will periodically schedule field trips to enhance your child’s learning experience. Frequently the field trips are designed to extend their knowledge of the curriculum. Field trips will involve transportation on a minibus. When this occurs, individual parent permission forms will be required, and teaching staff will provide the documents needed to participate. When a minibus is not available to transport children, parents may be asked to drive their own child to the field trip. Head Teachers and Teachers will notify parents each time a field trip is scheduled. When all teaching staff and children are away from the center, notification will be posted.",
+      "labels": [
+        "field-trips"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, FIELD TRIPS (line 633)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "182642c5-9914-4f65-a2f8-6eb94a0b0841",
+      "version": 1,
+      "text": "Parents are welcome to visit in their child’s classroom at any time. If you come to visit during the day, we ask that you plan to stay at least 30 minutes in order to give your child plenty of time to share his/her classroom experience with you. It is possible to arrange for other family members to visit also. All visitors will be asked to sign in. Please schedule a meeting with your child’s teacher if you need to communicate information that may take longer than a ten minute time frame.",
+      "labels": [
+        "visiting",
+        "parents"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PARENT VISITORS AND OPEN-DOOR POLICY (line 909)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "1bf613a6-3d08-444e-8930-1a3d9d37e0a7",
+      "version": 1,
+      "text": "Confidentiality is a professional, ethical and important aspect of the DCFD Programs. All program staff strive to build respect, trust, and cooperation as they build relationships with their colleagues, the children and families in the program. Confidentiality is demonstrated by all DCFD staff who agree to keep in confidence any specific information, specific issues, or concerns that are shared regarding participating children and families including information shared that may be of a sensitive nature. Parents are also expected to maintain confidentiality regarding specific teaching staff or other children and families in the program.",
+      "labels": [
+        "records",
+        "privacy"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, CONFIDENTIALITY (line 917)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "9b521821-8bd5-49f5-ae8c-8ddab3f1efe0",
+      "version": 1,
+      "text": "Concerns about child abuse or neglect are not confidential because such concerns are required by state law to be immediately reported to the proper authorities.",
+      "labels": [
+        "records",
+        "privacy"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, CONFIDENTIALITY (line 917)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "2fe2fe04-fc63-4cbe-b015-d6411e264dd9",
+      "version": 1,
+      "text": "INQUIRIES – IDEAS AND CONCERNS The Head Teacher at each CABQ CDC is also a licensed Director by the State of New Mexico and the person in charge of the day-to-day operations and programs for the center. Parents are urged to communicate directly with the Head Teacher and Teacher when they have inquiries, ideas or concerns. Our teaching staff are committed to providing the BEST educational experience for each child. If you feel this is not being accomplished, or if you would like to share some great moments, our teachers want this feedback. A parent or any other person wishing to share a concern regarding the center, teaching staff, or program should contact the Head Teacher and Teacher at the center. Individual conferences can be scheduled upon request.",
+      "labels": [
+        "complaints",
+        "records"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, CONFIDENTIALITY (line 917)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "4fa2db18-c42d-4a83-85be-b84b761f5159",
+      "version": 1,
+      "text": "Any complaints should first be directed to the Teacher in your child’s classroom. The Head Teacher will hear and mediate or otherwise respond to any complaints not resolved at the classroom level. If this is not sufficient, please submit your concerns in writing to the Education Specialist and/or the Program Manager at the DCFD main office, 1820 Randolph SE, Albuquerque, NM 87106. You are also welcome to call the DCFD and speak to the Child Development Program Education Specialist and or Program Manager at 767-6500. PROGRAM POLICIES AND PROCEDURES",
+      "labels": [
+        "complaints"
+      ],
+      "sensitive": true,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, GRIEVANCE PROCESS (line 939)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "9119b2b9-fa7d-4dc5-bf26-bfa003e82898",
+      "version": 1,
+      "text": "Early Head Start Ages Birth through Three (0-3)  Child Development Center Hours of Operation o 8:00am through 4:30 pm. o 7:00 am through 5:30 pm.  Early Head Start Program Hours; 8:00 am through 2:30 pm.  CABQ Extended Care; before and after the program day",
+      "labels": [
+        "hours",
+        "opening"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, HOURS OF OPERATION (line 975)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "091a61b0-d8f1-4f8b-8ecb-11a9f54ec475",
+      "version": 1,
+      "text": "Preschool Ages Three through Five (3-5) and NM Pre-K Ages Three (3) or Four (4)  Child Development Center Hours of Operation 7:00 am through 5:30 pm. o Preschool Program Hours; 7:00 am through 5:30pm o NM Pre-K Program Hours; 8:00 am through 2:30 pm.  For NM Pre-K : CABQ Extended Care; before and after the program day Preschool Ages Three through Five (3-5) and NM Pre-K Ages Three (3) or Four (4)  Child Development Center Hours of Operation 8:00 am through 4:30 pm. o Preschool Program Hours; 8:00am through 4:30pm o NM Pre-K Program Hours; 8:00 am through 2:30 pm.  For NM Pre-K: CABQ Extended Care; before and after the program day",
+      "labels": [
+        "hours",
+        "opening"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, HOURS OF OPERATION (line 975)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "e8f6cd99-d325-4074-a7e6-bb3d4793c493",
+      "version": 1,
+      "text": "Important Closure Dates A list of closure dates for city holidays, staff development and center maintenance is available from the enrollment office during the enrollment process and from the Head Teacher or Teacher at the center. These dates may vary from one school year to the next; please request a copy of these dates so that you know in advance when the centers will be closed. Please provide this information to people on your pick-up list.",
+      "labels": [
+        "hours",
+        "opening"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, HOURS OF OPERATION (line 975)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "da0fe494-7f1b-4611-b110-314527953575",
+      "version": 1,
+      "text": "Our program is centered on offering children meaningful experiences with interesting and engaging materials. Getting used to a new school and getting to know the new teacher and the new students is a big job for a child. With your support, your child can arrive on time and come to school every day, thus building school readiness. This will be instrumental in helping your child develop good school habits that they will carry with them to the next level of education.",
+      "labels": [
+        "attendance",
+        "absence"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, ATTENDANCE AND ABSENCES (line 1003)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "85d62282-7df5-4a08-89df-96a92bca41ab",
+      "version": 1,
+      "text": "To ensure that your child receives the full benefit of the program children must be present to fully participate in their early education. Children are expected to attend the center full time which is a total of 6.5 hours per day 5 days a week. It is the parent’s responsibility to notify the center daily if your child is going to be absent. It is important that you notify the Head Teacher if your child will be out for a long period of time due to illness, vacation or family emergency. If you have not called the center after two consecutive weeks of absence and there has been no contact, your child may be disenrolled.",
+      "labels": [
+        "attendance",
+        "absence"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, ATTENDANCE AND ABSENCES (line 1003)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "d88b027e-8b9f-4669-bef4-4a8e66d6162d",
+      "version": 1,
+      "text": "It is a requirement of the program that children arrive on time each day in order that your child fully participate and understand the focus of the day. If an emergency arises and you are going to be late, call the center to inform them of the time you will be arriving. Please set your clocks/watches to match the time on the clock at the center.",
+      "labels": [
+        "pickup",
+        "late"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, LATE ARRIVAL AND LATE PICK-UP (line 1046)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "7d54f3fb-1c54-4a76-ac01-e6f438563150",
+      "version": 1,
+      "text": "Center staff will document when your child arrives late or is picked up late. After your child has three (3) late arrivals or pick-ups listed, a parent conference will be scheduled with you to explain the responsibilities of all parties. If this practice continues, a conference with the Education Specialist or Program Manager will take place and could result in disenrollment of your child from the center.",
+      "labels": [
+        "pickup",
+        "late"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, LATE ARRIVAL AND LATE PICK-UP (line 1046)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "f102a834-64f7-4d4c-882a-9ebf6e26ab4b",
+      "version": 1,
+      "text": "If your child is left at the center after the center or program has closed, every effort will be made to contact family members and emergency contacts. If we are unable to reach anyone and you have still not contacted us 30 minutes after closing, Head Teachers and Teachers will contact the Albuquerque Police Department who then call Child Protective Services and they will take over the care of your child. Teachers will also notify the Education Specialist and/or the Program Manager and will contact State Licensing.",
+      "labels": [
+        "pickup",
+        "late"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, LATE ARRIVAL AND LATE PICK-UP (line 1046)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "55ad92ca-02f1-4a10-a3f5-e0184a322837",
+      "version": 1,
+      "text": "Any parent or other designated person who picks up a child while suspected of being under the influence of a substance, will be reported to the Albuquerque Police Department and to Child Protective Services and they will take over the care of your child. Teachers will also notify the Education Specialist and/or the Program Manager and will contact State Licensing. If a family finds themselves in this situation, for the safety of your child, please send another person on the pick-up list to pick up your child. It is always the enrolling parent’s responsibility to make the necessary arrangements to have their child arrive or depart at the indicated times.",
+      "labels": [
+        "pickup",
+        "late"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, LATE ARRIVAL AND LATE PICK-UP (line 1046)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "b3a07142-61cd-4236-8dbd-5fb9d92858ba",
+      "version": 1,
+      "text": "During program time, center staff are working with and teaching children. If you need to communicate with teachers or with your child, call the center and leave a message. If there is an emergency, please state the emergency in a message on the machine and center staff will respond at once.",
+      "labels": [
+        "visiting",
+        "phones"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PHONE CALLS AND CELL PHONE USE (line 1090)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "7876a084-d1bd-4c79-9a18-2dfb46dd9e12",
+      "version": 1,
+      "text": "Cell phone usage by parents or teaching staff is not allowed in the child development center. Quality greetings, interactions and program time with all adults and other children are important while at the center. Emergency phone calls are the exception and should be taken in private and away from the group to ensure confidentiality.",
+      "labels": [
+        "visiting",
+        "phones"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PHONE CALLS AND CELL PHONE USE (line 1090)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "9d261012-e6e5-4474-a5ae-7b47a4a22302",
+      "version": 1,
+      "text": "When it snows, parents should listen to the radio and/or television announcements before leaving home regarding the Albuquerque Public Schools (APS) schedule for the day. All CABQ CDCs will follow the announced APS schedule.  If APS announces a two-hour delay, all CABQ CDCs will begin accepting children at 10:00am. Breakfast will not be served.  If APS announces an early dismissal due to snow or other bad weather, all CABQ CDCs will also close and contact families to pick up their child.  If there is severe weather and APS happens to be on break, call the center before leaving home.  If APS announces a closure, all centers will close.",
+      "labels": [
+        "closures",
+        "weather"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, SNOW DAYS (line 1101)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "c81c1caf-db21-4c7a-9825-0fc2b38b63bc",
+      "version": 1,
+      "text": "1. The child must be between the ages of six weeks and three years of age for center based enrollment. 2. Parents must be in compliance with EHS guidelines i.e. assessments, home visits, individual and family development plans. 3. Parents or guardians must attend a Mandatory Enrollment Meeting to fill out all application forms and an orientation to the parent handbook before your child may begin attending the center. (For Home Based options please contact the EHS Intake Specialist) 4. Two copies of the Parental Agreement are signed. 5. The following required documentation must be submitted: copies of immunization records, birth certificate and emergency contact numbers. 6. Vacation time for up to two weeks will not jeopardize center enrollment. Please communicate all vacation plans and other absences with the Head Teacher to avoid any confusion.",
+      "labels": [
+        "enrollment"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, EARLY HEAD START ENROLLMENT CENTER BASED (line 1142)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "a3f14430-d133-4e43-8378-3485e92dedf9",
+      "version": 1,
+      "text": "Eligibility can include check/pay stubs, 1099 IRS Form/Quarterly Taxes if self-employed, and letters of employment to establish family status.",
+      "labels": [
+        "enrollment"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, EARLY HEAD START ENROLLMENT CENTER BASED (line 1142)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "72fb4a45-4587-4223-a208-73ba3ecef73f",
+      "version": 1,
+      "text": "Throughout the year changes in family status are updated. Head Teachers or Teachers will provide the enrollment office with any changes in family status like; address changes, phone numbers, household members, etc. Please let the Head Teacher know if there are any changes in family status; they will guide you to update that information.",
+      "labels": [
+        "enrollment"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PRESCHOOL AND NM PRE-K ENROLLMENT (line 1176)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "729ad967-3403-478b-9468-377aab5b6c29",
+      "version": 1,
+      "text": "Established/Required Fees All families enrolled in the program will have an established fee. The fees are based on a graduated fee schedule determined by family income and number of family members. There is an additional fee for siblings and fees for NM Pre-K Extended Care. (Please ask the enrollment office for more details). Fees are minimal, and non-refundable and there is no daily pro-rating of fees. Depending on the program chosen, established/required fees must be paid in advance of services. Families are paying for the spot their child is enrolled in, so fees must be paid regardless of attendance.",
+      "labels": [
+        "enrollment"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PRESCHOOL AND NM PRE-K ENROLLMENT (line 1176)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "e67a3f17-a280-4f12-bdf6-cb795ec398fb",
+      "version": 1,
+      "text": "If the family is using state subsidy, documentation of a state subsidy contract is required at enrollment. If the parent is seeking state subsidy, please let the enrollment office know. Your City of Albuquerque established fee will be in place until your state contract is approved. Once the subsidy copay is in place, it will be your new fee until the state contract expires. As soon as your contract expires the established weekly fee will be reinstated.",
+      "labels": [
+        "enrollment"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PRESCHOOL AND NM PRE-K ENROLLMENT (line 1176)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "02408ca6-4da2-452c-86be-79f14f97063e",
+      "version": 2,
+      "text": "Families can pay their fees online and in advance. A calendar of closure dates will be provided for times within the school year that payment is not required. Please talk to the Head Teacher for more information. It is a good practice to have a second resource for child care like grandparents or another family member, etc. For scheduled closures and for any emergency closures that could take place.",
+      "labels": [
+        "payment",
+        "fees",
+        "enrollment"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, PRESCHOOL AND NM PRE-K ENROLLMENT (line 1176)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "82768c84-19ab-43c1-9606-6b173d167372",
+      "version": 2,
+      "text": "All families enrolled in the Preschool, NM Pre-K and Extended Care programs will have an established fee. Fees are minimal, and non-refundable and there is no daily pro-rating of fees. Depending on the program chosen, established/required fees must be paid in advance of services regardless of attendance. The enrollment office will provide families with an established fee upon enrollment.",
+      "labels": [
+        "payment",
+        "fees",
+        "extended-care"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, EXTENDED CARE PAYMENT POLICY AND PROCEDURES (line 1350)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "6c4a16cb-25e0-469c-99c7-015f9c66e352",
+      "version": 2,
+      "text": "Please note…It is always the Enrolling Parent’s responsibility to make the necessary arrangements to have their child arrive or depart at the correct times and to tend to the required fees without impacting the child’s well-being. NUTRITION, HEALTH AND SAFETY",
+      "labels": [
+        "payment",
+        "fees",
+        "extended-care"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, EXTENDED CARE PAYMENT POLICY AND PROCEDURES (line 1350)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "5796132c-ff01-4c02-bb58-4c2564e7aef1",
+      "version": 1,
+      "text": "The DCFD programs assist families in meeting each child’s nutrition needs and in establishing good eating habits that nurture healthy development. The quantities and kinds of foods served follow the recommended meal pattern standards set by USDA. All of the children’s meals are funded by the Child and Adult Care Food Program (CACFP).",
+      "labels": [
+        "food",
+        "meals"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NUTRITION (line 1391)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "689869f2-fbc5-47c9-86f2-e3d4fdf70164",
+      "version": 1,
+      "text": "Early Head Start provides formula with iron. If your child is breastfed, you will need to provide a supply of expressed breast milk. Breast milk must be labeled and dated. Infants on breast milk must show the ability to successfully bottle feed.",
+      "labels": [
+        "food",
+        "meals"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NUTRITION (line 1391)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "fc49f183-3007-4a27-b280-399cc343ca99",
+      "version": 1,
+      "text": "Meals and Outside Food Nutritional meals and snacks are provided at the center and are based on the CACFP regulations. All children in attendance will be offered the same meals with no physical segregation of, or other discriminatory action against any child because of race, color, national origin, sex, age, or disability.",
+      "labels": [
+        "food",
+        "meals"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NUTRITION (line 1391)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "d75b4ddd-6179-49c9-b877-df56e019570d",
+      "version": 1,
+      "text": "Children and parents please do not bring outside food into the center. Exceptions to bringing outside food will be decided by the Head Teacher (Outside food must be store-bought with a nutrition label). Other determining factors can be allergies, birthdays, pot lucks, etc. All food items brought should be labeled with your child’s name and the day’s date. The CDCs limit the use of peanut products and request peanut-free snacks and 100% juice for children. If a child has a food allergy, a Nutrition/Allergy Form must be signed by the doctor.",
+      "labels": [
+        "food",
+        "meals",
+        "birthdays"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NUTRITION (line 1391)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "9061d281-b2db-465f-a846-d38a6e745bb0",
+      "version": 1,
+      "text": "Food Allergies The DCFD participates in the CACFP. This program ensures that our participants are receiving meals and taking part in family style dining experiences. If a child has a food allergy, a Nutrition/Allergy form must be signed by the doctor and given to the Head Teacher for assessment. This information will also be shared with the meal vendor so that they will find the right food components to meet the child’s needs. Vendors for our meal service make and serve special meals based on the medical needs of a child; however, they do not make and provide meals based on lifestyle choices. The program assists in informing the vendor about special diets, foods, or other dietary requirements with appropriate documentation from the child’s physician. The program also cooperates as much as possible with diet restrictions for religious or cultural purposes when able.",
+      "labels": [
+        "food",
+        "meals"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NUTRITION (line 1391)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "92454514-9760-4d1d-ad4e-f174e8b49274",
+      "version": 1,
+      "text": "Birthdays If your child wishes to share his/her birthday with the classmates, you are welcome to bring a special treat for the celebration. The center encourages creative, peanut-free, nutritious ideas for children of this age. Make arrangements with your child’s teacher well in advance to assure that all issues are addressed (e.g. religious beliefs, allergies) and all food items brought are store-bought with a nutrition label. Label items with your child’s name and the day’s date. If you are having a party at home and only some of the children in the classroom are invited, please do not hand out invitations at the center. This practice could be hurtful to non-invited children.",
+      "labels": [
+        "food",
+        "meals",
+        "birthdays",
+        "celebrations"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, NUTRITION (line 1391)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "3c931d74-3edd-4234-97b5-5b9669d1f488",
+      "version": 1,
+      "text": "Discuss the situation with the child Get down to child’s eye level Identify the misbehavior Understand the reason behind behavior Structure the environment Involve the parents Control the situation Describe the behavior to child Involve the child through choices and consequences Acknowledge the child’s feelings Plan time for loving Note the Successes Lead child to new activity Comment on positive behaviors Increase consistency Engage the child in another activity Notice and acknowledge positive behavior Encourage child’s positive behavior/actions",
+      "labels": [
+        "behaviour"
+      ],
+      "sensitive": true,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, GUIDANCE AND DISCIPLINE (line 1764)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "f7965f71-3ddc-4d78-96c1-7f8e88d467e2",
+      "version": 1,
+      "text": "Our guidance/discipline procedures are consistent with those printed in the State of New Mexico “Child Care Regulations.” The following is excerpted: “Discipline means guidance which fosters the child’s ability to become self-disciplined, demonstrating orderly conduct in relationship to peers and adults. Discipline shall be clear and understandable to the child, consistent and explained to the child before and at the time of any disciplinary action. Discipline includes positive guidance, redirection and the setting of clear-cut limits, which foster the child’s own ability to become self-disciplined. Discipline practices established by the Child Development Center are designed to encourage the child to be fair, to respect property and assume responsibility for him/her self as well as responsibility for others”",
+      "labels": [
+        "behaviour"
+      ],
+      "sensitive": true,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, GUIDANCE AND DISCIPLINE (line 1764)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "924db04a-6dbf-4cf8-9983-bd846f16b09d",
+      "version": 1,
+      "text": "The DCFD programs provide a supportive environment in which very young children can learn to practice appropriate behavior as individuals and in a group. Teachers respond sensitively meeting each child’s needs in an affectionate and nurturing manner. Early Head Start centers provide positive guidance techniques to encourage self-control in the children. Teachers foster physical and emotional security for each child by setting clear, consistent limits and having realistic expectations of the children.",
+      "labels": [
+        "behaviour"
+      ],
+      "sensitive": true,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, GUIDANCE AND DISCIPLINE (line 1764)",
+      "notes": "",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "95943dbc-504c-4d86-b865-952f90dc27e1",
+      "version": 1,
+      "text": "If you pick up your child after the center or your program has closed, a late fee of $15.00 per occurrence applies. The fee is added to your account and shows in your online bill.",
+      "labels": [
+        "pickup",
+        "late",
+        "fees"
+      ],
+      "sensitive": false,
+      "owner_id": "dir-1",
+      "reference": "Family Handbook, LATE PICK UP (line 1226)",
+      "notes": "Added 2026-08-25: the fee amount was in the handbook but never seeded.",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-12"
+    },
+    {
+      "id": "4a9da332-a342-4c19-96c6-7e13bac7bf4e",
+      "version": 1,
+      "text": "To protect the children and staff, a sick child stays home until they are well enough to fully take part in the day, including outdoor play. Keep your child home if they have a fever now or very recently, ongoing vomiting or diarrhea, pink eye, a cloudy runny nose, a new undiagnosed rash, symptoms of anything contagious, or have only just started antibiotics. If your child becomes unwell at the center you will be called to pick them up, and a doctor's note may be required to return. For a specific situation, tell the front desk the symptoms and it will check — and Dana Whitfield, our Health & Safety Lead, confirms every return.",
+      "labels": [
+        "illness",
+        "sick",
+        "fever"
+      ],
+      "sensitive": false,
+      "owner_id": "hlt-1",
+      "reference": "Family Handbook, Illness (line 1468)",
+      "notes": "Numbers-free mirror of the handbook illness section; thresholds stay code-only.",
+      "approved_by": "Rosa Delgado",
+      "approved_at": "2026-08-25"
+    }
+  ],
+  "draft_policies": [
+    {
+      "change_id": "chg_mt8unp7q_hlodvmcei8",
+      "text": "Children get sun protection whenever they are outside for more than 10 minutes: shade, covering clothing, a hat, and sunscreen with SPF 15-30 applied 30 minutes before going out. We need your signed permission to apply sunscreen, and you bring it in labeled with your child's name; it is stored out of reach and we stop and tell you if skin looks irritated.",
+      "labels": [
+        "sunscreen",
+        "outdoors",
+        "health"
+      ],
+      "sensitive": false,
+      "reference": "Family Handbook, Sunscreen (line 1538)",
+      "note": "Draft from the handbook, awaiting review.",
+      "proposed_by": "Front desk (draft)",
+      "proposed_at": "2026-08-25T15:58:41.510Z"
+    },
+    {
+      "change_id": "chg_mt8unpf9_hlodvmi7m0",
+      "text": "State regulations require an up-to-date immunization record, or a current exemption certificate, on file before a child can attend. If your child receives an immunization during the year, tell the Head Teacher so the record and the enrollment office are updated. State licensing spot-checks these files.",
+      "labels": [
+        "immunizations",
+        "enrollment",
+        "records"
+      ],
+      "sensitive": false,
+      "reference": "Family Handbook, Immunizations (line 1445)",
+      "note": "Draft from the handbook, awaiting review.",
+      "proposed_by": "Front desk (draft)",
+      "proposed_at": "2026-08-25T15:58:41.781Z"
+    },
+    {
+      "change_id": "chg_mt8unpmv_hlodvmo314",
+      "text": "Please keep a labeled spare set of clothing at the center: shirt, pants, socks and underwear. If clothes are soiled and no spare is available you will be asked to bring some or pick your child up, and if the spare set goes home for washing, replace it the next day.",
+      "labels": [
+        "clothing",
+        "what-to-bring"
+      ],
+      "sensitive": false,
+      "reference": "Family Handbook, Extra Clothing (line 1740)",
+      "note": "Draft from the handbook, awaiting review.",
+      "proposed_by": "Front desk (draft)",
+      "proposed_at": "2026-08-25T15:58:42.055Z"
+    }
+  ]
+}
