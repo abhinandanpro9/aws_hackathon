@@ -12,9 +12,9 @@ database_name = "awshk_frontdesk_state"
 database_id = "5b8e8c39-f17a-4151-bd6d-04c6e28a0869"
 
 [vars]
-SPONSOR_SNYK = "FALLBACK"
-SPONSOR_PRELINT = "FALLBACK"
+GEMINI_MODELS = "gemini-3.5-flash-lite,gemini-3.7-flash,gemini-3.5-flash,gemini-2.5-flash,gemini-3.6-flash"
+SPONSOR_PRELINT = "REAL"
 SPONSOR_ROCKETRIDE = "FALLBACK"
-SPONSOR_MASKY = "FALLBACK"
-N8N_WEBHOOK_URL = ""
+SPONSOR_MASKY = "REAL"
+N8N_WEBHOOK_URL = "https://awshackathon.app.n8n.cloud/webhook/frontdesk-escalation"
 # GEMINI_API_KEY is set per-environment, never committed. See README.

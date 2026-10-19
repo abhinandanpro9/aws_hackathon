@@ -41,7 +41,6 @@ export function memoryDb(): D1Like {
     feedback: [],
     bookings: [],
     session_summaries: [],
-    visits: [],
     activity: [],
   }
 

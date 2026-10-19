@@ -21,6 +21,11 @@ export interface Notified {
 
 export const NOTIFY_TIMEOUT_MS = 3000
 
+/** A session id starting "demo-" is demo traffic: still sent, but marked. */
+export function isDemoSession(sessionId: string | null): boolean {
+  return sessionId?.startsWith('demo-') === true
+}
+
 type FetchLike = (url: string, init: RequestInit) => Promise<{ ok: boolean; status: number }>
 
 /**
@@ -32,8 +37,10 @@ export function notifyEscalation(
   payload: EscalationEvent,
   fetchImpl: FetchLike = fetch,
 ): { notified: Notified; pending: Promise<void> } {
+  // "Dana Whitfield (Health & Safety Lead)": the parent UI shows this line as is.
+  const to = payload.role.length === 0 ? payload.person : `${payload.person} (${payload.role})`
   if (url === undefined || url.trim().length === 0) {
-    return { notified: { channel: 'fallback', to: payload.person }, pending: Promise.resolve() }
+    return { notified: { channel: 'fallback', to }, pending: Promise.resolve() }
   }
 
   let pending: Promise<void>
@@ -43,7 +50,7 @@ export function notifyEscalation(
     pending = fetchImpl(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ ...payload, ...(isDemoSession(payload.sessionId) ? { demo: true } : {}) }),
       signal: controller.signal,
     })
       .then((response) => {
@@ -53,8 +60,8 @@ export function notifyEscalation(
       .finally(() => clearTimeout(timer))
   } catch (error: unknown) {
     Logger.error('notify_failed', error, {})
-    return { notified: { channel: 'fallback', to: payload.person }, pending: Promise.resolve() }
+    return { notified: { channel: 'fallback', to }, pending: Promise.resolve() }
   }
 
-  return { notified: { channel: 'n8n', to: payload.person }, pending }
+  return { notified: { channel: 'n8n', to }, pending }
 }

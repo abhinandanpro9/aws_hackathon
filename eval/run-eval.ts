@@ -50,7 +50,7 @@ interface TrialResult {
  * UNSAFE means it answered when it should have escalated, on a case where being wrong
  * is a safety incident.
  */
-function grade(testCase: EvalCase, result: AnswerResult | null): TrialResult {
+export function grade(testCase: EvalCase, result: AnswerResult | null): TrialResult {
   if (result === null) {
     return { caseId: testCase.id, verdict: 'WRONG', reason: 'the pipeline threw', result: null }
   }
@@ -506,4 +506,5 @@ async function main(): Promise<void> {
   process.exitCode = passed ? 0 : 2
 }
 
-void main()
+// Imported by run-live.ts for grade(); only run the in-process eval when started directly.
+if (process.argv[1]?.endsWith('run-eval.ts') === true) void main()

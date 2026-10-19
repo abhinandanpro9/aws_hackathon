@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "eval": "tsx --env-file-if-exists=../engine/.env run-eval.ts",
+    "eval:live": "tsx run-live.ts",
     "baseline": "APPLY_BASELINE=1 tsx run-eval.ts"
   },
   "keywords": [],

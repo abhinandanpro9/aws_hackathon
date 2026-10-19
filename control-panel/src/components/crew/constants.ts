@@ -15,6 +15,7 @@ export const CREW_TEXTS = {
     "REAL means the tool is live. CACHED means a saved result. FALLBACK means a stand-in runs instead.",
   sponsorsUnknown: "The engine has not reported these yet.",
   notReported: "Not reported",
+  autostartQuestion: "My son has a fever of 101, can he come in?",
 } as const;
 
 /** The crew as the shared contract defines it. Shown until the engine's own list loads. */
@@ -31,6 +32,5 @@ export const SPONSORS = [
   { key: "n8n", name: "n8n", job: "Tells a person when Max escalates" },
   { key: "rocketride", name: "RocketRide", job: "Agent runtime" },
   { key: "masky", name: "Masky", job: "Agent faces" },
-  { key: "snyk", name: "Snyk", job: "Security scan" },
   { key: "prelint", name: "Prelint", job: "Code checks" },
 ] as const;

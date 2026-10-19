@@ -20,6 +20,9 @@ export function ChatHeader(): React.JSX.Element {
             </Badge>
           </div>
           <p className="truncate text-xs text-muted-foreground">{CHAT_TEXT.headerTagline}</p>
+          <p className="mt-1 w-fit max-w-full truncate rounded-full bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-foreground">
+            {CHAT_TEXT.signedInAs}
+          </p>
         </div>
       </div>
     </header>

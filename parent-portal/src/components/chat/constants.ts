@@ -9,6 +9,8 @@ export const CHAT_TEXT = {
   openingSubline:
     "We answer from our family handbook, and I show you where each answer came from. Anything I am not sure about goes to a member of staff.",
   assistantBadge: "Automated",
+  /** Display only. There is no sign-in in the demo. */
+  signedInAs: "Signed in as Maya Patel (demo parent) · Leo, Sunflower Room",
   handoffWithContact: (firstName: string): string =>
     `That one is for ${firstName} — their number is above.`,
   handoffNoContact: "That one is best answered by a person. Our number is above.",
@@ -31,8 +33,8 @@ export const CHAT_TEXT = {
 } as const;
 
 export const SUGGESTIONS: readonly string[] = [
-  "Is my child too sick to come in?",
-  "What time do you close?",
-  "I forgot to pack lunch",
+  "My son has a fever of 101, can he come in?",
+  "What's for lunch today?",
   "Are you open on Veterans Day?",
+  "Any tour slots open Thursday morning?",
 ];

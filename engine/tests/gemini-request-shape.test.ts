@@ -9,7 +9,8 @@ import { GeminiClient } from '../src/llm/gemini.js'
 
 function captureConfig(): { calls: Record<string, unknown>[]; client: GeminiClient } {
   const calls: Record<string, unknown>[] = []
-  const client = new GeminiClient('test-key')
+  // Pinned to 3.6: thinkingLevel is a 3.6+ setting, and the default list now starts on lite.
+  const client = new GeminiClient('test-key', ['gemini-3.6-flash'])
 
   const ai = (client as unknown as { ai: { models: { generateContent: unknown } } }).ai
   ai.models.generateContent = vi.fn(async (request: { config: Record<string, unknown> }) => {
@@ -40,5 +41,30 @@ describe('the request Gemini 3.7 will actually accept', () => {
     const thinking = calls[0]?.['thinkingConfig'] as Record<string, unknown> | undefined
     expect(thinking?.['thinkingBudget']).toBeUndefined()
     expect(thinking?.['thinkingLevel']).toBe('LOW')
+  })
+})
+
+// Quill and the handbook extract ask for their own JSON array. The answer/sources wrapper
+// used to override that and keep only "answer", so every draft parsed to nothing.
+describe('raw format, for callers that ask for their own JSON', () => {
+  it('sends the system prompt as is and returns the reply text untouched', async () => {
+    const calls: Record<string, unknown>[] = []
+    const client = new GeminiClient('test-key')
+    const ai = (client as unknown as { ai: { models: { generateContent: unknown } } }).ai
+    const draft = '[{"text":"We do not offer swimming.","labels":["swimming"],"sensitive":false,"reference":"r"}]'
+    ai.models.generateContent = vi.fn(async (request: { config: Record<string, unknown> }) => {
+      calls.push(request.config)
+      return { candidates: [{ content: { parts: [{ text: draft }] } }] }
+    })
+
+    const reply = await client.converse({
+      system: 'draft one policy',
+      turns: [{ role: 'parent', text: 'swimming?' }],
+      tools: [],
+      format: 'raw',
+    })
+
+    expect(calls[0]?.['systemInstruction']).toBe('draft one policy')
+    expect(reply.text).toBe(draft)
   })
 })

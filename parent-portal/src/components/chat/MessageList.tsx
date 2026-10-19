@@ -1,4 +1,5 @@
 import { AnswerBubble } from "@/components/answer/AnswerBubble";
+import { HearAvaCard } from "@/components/crew/HearAvaCard";
 import type { AgentId } from "@/lib/api";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PhoneIcon } from "@/lib/icons";
@@ -27,6 +28,8 @@ export function MessageList({
       aria-label={CHAT_TEXT.listLabel}
       className="mx-auto flex w-full max-w-[480px] flex-col gap-4 px-4 py-4"
     >
+      <HearAvaCard className="mx-auto" />
+
       <OpeningState
         onPick={onPickSuggestion}
         disabled={isWaiting}

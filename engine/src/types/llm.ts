@@ -26,6 +26,14 @@ export interface ConverseRequest {
   /** The tools the model may call this turn, in the provider's declaration shape. */
   readonly tools: readonly unknown[]
   readonly temperature?: number
+  /**
+   * 'raw': the system prompt is used as is and the reply text comes back untouched.
+   * For callers that ask for their own JSON (handbook extract, Quill's drafts); without it
+   * the answer/sources wrapper swallows their format.
+   */
+  readonly format?: 'answer' | 'raw'
+  /** When set, the model must call this one tool this turn and nothing else. */
+  readonly forceTool?: string
 }
 
 /**

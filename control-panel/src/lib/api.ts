@@ -212,8 +212,8 @@ export const api = {
     return request("/api/health");
   },
 
-  async ask(question: string): Promise<ApiAnswer | null> {
-    return request("/api/ask", { method: "POST", body: JSON.stringify({ question }) });
+  async ask(question: string, sessionId?: string): Promise<ApiAnswer | null> {
+    return request("/api/ask", { method: "POST", body: JSON.stringify({ question, sessionId }) });
   },
 
   async center(): Promise<ApiCenter | null> {

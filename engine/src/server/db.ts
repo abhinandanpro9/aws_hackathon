@@ -414,48 +414,6 @@ export async function getHistoryFor(
  * The deletes travel together: a partial reset would leave conversations pointing at policies
  * that no longer exist.
  */
-// ─── Visits ───
-
-export interface Visit {
-  readonly ip: string | null
-  readonly country: string | null
-  readonly city: string | null
-  readonly path: string
-  readonly userAgent: string | null
-}
-
-/** One request, written down. Rides waitUntil so it never slows an answer. */
-export async function recordVisit(db: D1Like, visit: Visit): Promise<void> {
-  await db
-    .prepare('INSERT INTO visits (id, at, ip, country, city, path, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)')
-    .bind(
-      `v_${Date.now().toString(36)}_${Math.floor(Math.random() * 1e6).toString(36)}`,
-      new Date().toISOString(),
-      visit.ip,
-      visit.country,
-      visit.city,
-      visit.path,
-      visit.userAgent,
-    )
-    .run()
-}
-
-export async function getVisits(db: D1Like): Promise<readonly (Visit & { at: string })[]> {
-  const { results } = await db
-    .prepare('SELECT * FROM visits')
-    .all<{ at: string; ip: string | null; country: string | null; city: string | null; path: string; user_agent: string | null }>()
-  return results
-    .map((row) => ({
-      at: row.at,
-      ip: row.ip,
-      country: row.country,
-      city: row.city,
-      path: row.path,
-      userAgent: row.user_agent,
-    }))
-    .reverse()
-}
-
 // ─── Session summaries ───
 
 export interface SessionSummary {
@@ -533,11 +491,14 @@ interface ActivityRow {
   tool: string | null
   handoff_to: string | null
   ms: number
+  demo?: number
 }
 
 export interface ActivityEvent extends AgentStep {
   readonly question: string
   readonly at: string
+  /** Set only when the step came from a demo- session. */
+  readonly demo?: true
 }
 
 /** Write one answer's steps. ts keeps them in step order inside the same millisecond. */
@@ -546,6 +507,7 @@ export async function recordActivity(
   steps: readonly AgentStep[],
   question: string,
   at: string,
+  demo = false,
 ): Promise<void> {
   if (steps.length === 0) return
   const base = Date.now() * 100
@@ -553,7 +515,7 @@ export async function recordActivity(
     steps.map((step, index) =>
       db
         .prepare(
-          'INSERT INTO activity (id, ts, at, question, agent, action, tool, handoff_to, ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          'INSERT INTO activity (id, ts, at, question, agent, action, tool, handoff_to, ms, demo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         )
         .bind(
           `a_${base + index}_${Math.floor(Math.random() * 1e6).toString(36)}`,
@@ -565,18 +527,27 @@ export async function recordActivity(
           step.tool ?? null,
           step.handoffTo ?? null,
           step.ms,
+          demo ? 1 : 0,
         ),
     ),
   )
 }
 
-/** Newest first. */
+/**
+ * Newest question first; inside one question, the steps in the order they happened.
+ * FLOW: newest rows by ts -> group by question (ts / 100) -> at DESC, group DESC, step ASC
+ * Plain ts DESC read one question backwards: Max before Nora before Ava.
+ */
 export async function getActivity(db: D1Like, limit: number): Promise<ActivityEvent[]> {
   const { results } = await db
     .prepare('SELECT * FROM activity ORDER BY ts DESC LIMIT ?')
     .bind(limit)
     .all<ActivityRow>()
-  return results.slice(0, limit).map((row) => ({
+  const group = (row: ActivityRow): number => Math.floor(Number(row.ts) / 100)
+  const ordered = results.slice(0, limit).sort(
+    (a, b) => b.at.localeCompare(a.at) || group(b) - group(a) || Number(a.ts) - Number(b.ts),
+  )
+  return ordered.map((row) => ({
     agent: row.agent as AgentId,
     action: row.action,
     ...(row.tool === null || row.tool === undefined ? {} : { tool: row.tool }),
@@ -584,6 +555,7 @@ export async function getActivity(db: D1Like, limit: number): Promise<ActivityEv
     ms: row.ms,
     question: row.question,
     at: row.at,
+    ...(Number(row.demo ?? 0) === 1 ? { demo: true as const } : {}),
   }))
 }
 

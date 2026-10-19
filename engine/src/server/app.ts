@@ -24,7 +24,6 @@ import {
   findChange,
   getApproved,
   getBookings,
-  recordVisit,
   getSessionSummary,
   saveSessionSummary,
   getChanges,
@@ -47,7 +46,7 @@ import { answeredThisWeek } from './stats.js'
 import { threadsFrom } from './threads.js'
 import { Logger } from '../lib/logger.js'
 import { AGENTS, parseRouteTo, stepsFromTrace } from '../lib/agents.js'
-import { notifyEscalation } from '../lib/notify.js'
+import { isDemoSession, notifyEscalation } from '../lib/notify.js'
 import type { Notified } from '../lib/notify.js'
 import { CURATOR_SYSTEM } from '../prompts/curator.js'
 import { getActivity, recordActivity } from './db.js'
@@ -60,9 +59,9 @@ export interface Env {
   DB: D1Like
   GEMINI_API_KEY?: string
   N8N_WEBHOOK_URL?: string
+  GEMINI_MODELS?: string
   SPONSOR_ROCKETRIDE?: string
   SPONSOR_MASKY?: string
-  SPONSOR_SNYK?: string
   SPONSOR_PRELINT?: string
 }
 
@@ -100,23 +99,6 @@ app.use('/*', async (c, next) => {
     status: c.res.status,
     ms: Date.now() - started,
   })
-
-  // Visibility for a demo with no real users: who opened it, from where.
-  // Written to D1 only -- read privately with a wrangler query, never served by any route.
-  // FLOW: any request (GET or POST) -> recordVisit -> visits row: ip, geo, path, user agent
-  // 1. every method, not just GET: asking a question is a POST, and a GET-only gate made
-  //    the one interaction worth seeing -- did they actually try the chat -- invisible
-  // 2. path only, never the question text: line 86's rule still holds, no family data in a log
-  // 3. awaited inline: waitUntil dropped the promise on this runtime. A few ms is the price
-  //    of knowing; a failed write logs and never breaks the response.
-  const cf = (c.req.raw as { cf?: { country?: string; city?: string } }).cf
-  await recordVisit(c.env.DB, {
-    ip: c.req.header('CF-Connecting-IP') ?? null,
-    country: cf?.country ?? null,
-    city: cf?.city ?? null,
-    path: c.req.path,
-    userAgent: c.req.header('User-Agent') ?? null,
-  }).catch((error: unknown) => Logger.error('visit_write_failed', error, {}))
 })
 
 /**
@@ -134,7 +116,7 @@ async function db(c: Ctx): Promise<D1Like> {
 // ─── Health ───
 
 app.get('/api/health', (c) => {
-  const llm = geminiFromEnv(c.env.GEMINI_API_KEY)
+  const llm = geminiFromEnv(c.env.GEMINI_API_KEY, c.env.GEMINI_MODELS)
   return c.json({
     ok: true,
     center: centerData.center.name,
@@ -153,7 +135,7 @@ app.post('/api/ask', async (c) => {
     return c.json({ error: 'A question is required.' }, 400)
   }
 
-  const llm = geminiFromEnv(c.env.GEMINI_API_KEY)
+  const llm = geminiFromEnv(c.env.GEMINI_API_KEY, c.env.GEMINI_MODELS)
   if (llm === null) {
     return c.json({ error: 'No model is configured. Set GEMINI_API_KEY.' }, 503)
   }
@@ -255,7 +237,7 @@ app.post('/api/ask', async (c) => {
 
   // The agents who worked on it, read from the trace, for the crew view and the activity feed.
   const agents = stepsFromTrace(result)
-  await recordActivity(store, agents, question, askedAt).catch((error: unknown) =>
+  await recordActivity(store, agents, question, askedAt, isDemoSession(sessionId)).catch((error: unknown) =>
     Logger.error('activity_write_failed', error, {}),
   )
 
@@ -306,7 +288,6 @@ app.get('/api/sponsors', (c) =>
       n8n: { mode: (c.env.N8N_WEBHOOK_URL ?? '').trim().length > 0 ? 'REAL' : 'FALLBACK' },
       rocketride: { mode: sponsorMode(c.env.SPONSOR_ROCKETRIDE) },
       masky: { mode: sponsorMode(c.env.SPONSOR_MASKY) },
-      snyk: { mode: sponsorMode(c.env.SPONSOR_SNYK) },
       prelint: { mode: sponsorMode(c.env.SPONSOR_PRELINT) },
     },
   }),
@@ -328,7 +309,7 @@ app.post('/api/curator/draft', async (c) => {
   const question = body.question?.trim() ?? ''
   if (question.length === 0) return c.json({ error: 'A question is required.' }, 400)
 
-  const llm = geminiFromEnv(c.env.GEMINI_API_KEY)
+  const llm = geminiFromEnv(c.env.GEMINI_API_KEY, c.env.GEMINI_MODELS)
   if (llm === null) return c.json({ error: 'No model is configured. Set GEMINI_API_KEY.' }, 503)
 
   const store = await db(c)
@@ -342,6 +323,7 @@ app.post('/api/curator/draft', async (c) => {
       turns: [{ role: 'parent', text: `Parent question: ${question}\n\nExisting approved policies:\n${existing}` }],
       tools: [],
       temperature: 0,
+      format: 'raw',
     })
   } catch (error: unknown) {
     Logger.error('curator_failed', error, {})
@@ -509,13 +491,13 @@ app.post('/api/extract', async (c) => {
     return c.json({ error: `That is ${words} words; the limit is ${EXTRACT_WORD_LIMIT}. Paste a section at a time.` }, 400)
   }
 
-  const llm = geminiFromEnv(c.env.GEMINI_API_KEY)
+  const llm = geminiFromEnv(c.env.GEMINI_API_KEY, c.env.GEMINI_MODELS)
   if (llm === null) return c.json({ error: 'No model is configured. Set GEMINI_API_KEY.' }, 503)
 
   // The model structures; code validates every draft; the queue stays the only path in.
   let reply
   try {
-    reply = await llm.converse({ system: EXTRACT_SYSTEM, turns: [{ role: 'parent', text: pasted }], tools: [], temperature: 0 })
+    reply = await llm.converse({ system: EXTRACT_SYSTEM, turns: [{ role: 'parent', text: pasted }], tools: [], temperature: 0, format: 'raw' })
   } catch (error: unknown) {
     Logger.error('extract_failed', error, { words })
     return c.json({ error: 'Could not read that just now. Try again in a moment.' }, 503)

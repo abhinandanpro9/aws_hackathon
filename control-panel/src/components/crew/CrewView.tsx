@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { api, type ApiActivity, type ApiAgent, type SponsorMode } from "@/lib/api";
@@ -55,6 +55,16 @@ export function CrewView() {
       if (list !== null && list.length > 0) setAgents(list);
     });
     void api.sponsors().then(setSponsors);
+  }, []);
+
+  // ?autostart=1 asks one demo question so the feed fills live. The ref stops a second ask
+  // when React mounts the effect twice in development.
+  const autostarted = useRef<boolean>(false);
+  useEffect(() => {
+    if (autostarted.current) return;
+    if (new URLSearchParams(window.location.search).get("autostart") !== "1") return;
+    autostarted.current = true;
+    void api.ask(CREW_TEXTS.autostartQuestion, `demo-crew-${Date.now()}`);
   }, []);
 
   useEffect(() => {

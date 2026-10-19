@@ -37,6 +37,18 @@ const ROUTE_BY_TOOL: Readonly<Record<ToolName, AnswerRoute>> = {
   escalate_to_person: 'sensitive',
 }
 
+/**
+ * Illness words in the parent's question.
+ * FLOW: match -> the first model turn may call only check_attendance -> the coded rule decides
+ * Live, the model sent 4 of 5 fever questions straight to escalation, so the fever rule never ran.
+ */
+const ILLNESS_WORDS =
+  /\b(fever\w*|temperature|temp|sick|vomit\w*|throw(?:ing|s)? up|threw up|diarrh\w*|rash\w*|cough\w*|ill|illness\w*|unwell)\b/i
+
+export function isIllnessQuestion(text: string): boolean {
+  return ILLNESS_WORDS.test(text)
+}
+
 // ─── Results ───
 
 function handOff(
@@ -254,6 +266,7 @@ async function answerQuestionInner(
     let reply
     try {
       reply = await context.llm.converse({
+        ...(pass === 0 && isIllnessQuestion(question.text) ? { forceTool: 'check_attendance' } : {}),
         // Carries today's date at the centre, so "today" and "tomorrow" resolve to real
         // dates instead of reading as vague days and going to a person.
         system: conversePrompt(question.askedAt ?? new Date().toISOString()),

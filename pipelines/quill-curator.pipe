@@ -58,8 +58,10 @@
 			"provider": "llm_gemini",
 			"name": "Gemini for Quill",
 			"config": {
-				"profile": "gemini-3-flash-preview",
-				"gemini-3-flash-preview": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
 					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
 				},
 				"parameters": {}

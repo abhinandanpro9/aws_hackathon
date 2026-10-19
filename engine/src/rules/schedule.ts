@@ -3,7 +3,7 @@
 // 1. hours depend on WHICH child; an averaged closing time is wrong for most parents here
 // 2. closures run an ordered ladder, and the order is the whole contract
 // 3. nothing here books anything -- an action request names a person and a number
-// WHY: closures must be checked before the weekly pattern; the wrong order is a known bug of this shape
+// WHY: closures must be checked before the weekly pattern; checking them in the wrong order is a known bug of this shape
 
 import centerData from '../../data/center.json' with { type: 'json' }
 import { CITATIONS, FRONT_DESK_CAN_TAKE_ACTIONS } from '../config/policy.js'

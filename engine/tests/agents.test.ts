@@ -67,7 +67,7 @@ describe('escalation notice to n8n', () => {
     const fetchImpl = vi.fn()
     const { notified, pending } = notifyEscalation(undefined, payload, fetchImpl)
     await pending
-    expect(notified).toEqual({ channel: 'fallback', to: 'Maria Lopez' })
+    expect(notified).toEqual({ channel: 'fallback', to: 'Maria Lopez (Center Director)' })
     expect(fetchImpl).not.toHaveBeenCalled()
   })
 
@@ -106,7 +106,6 @@ describe('crew routes', () => {
         n8n: { mode: 'FALLBACK' },
         rocketride: { mode: 'FALLBACK' },
         masky: { mode: 'FALLBACK' },
-        snyk: { mode: 'FALLBACK' },
         prelint: { mode: 'FALLBACK' },
       },
     })
@@ -114,12 +113,13 @@ describe('crew routes', () => {
     const on = await app.request('/api/sponsors', {}, {
       DB: memoryDb(),
       N8N_WEBHOOK_URL: 'https://n8n.example/hook',
-      SPONSOR_SNYK: 'REAL',
+      SPONSOR_PRELINT: 'REAL',
       SPONSOR_MASKY: 'cached',
     })
     const body = (await on.json()) as { sponsors: Record<string, { mode: string }> }
     expect(body.sponsors['n8n']?.mode).toBe('REAL')
-    expect(body.sponsors['snyk']?.mode).toBe('REAL')
+    expect(body.sponsors['prelint']?.mode).toBe('REAL')
+    expect(body.sponsors['snyk']).toBeUndefined()
     expect(body.sponsors['masky']?.mode).toBe('CACHED')
   })
 
@@ -134,5 +134,76 @@ describe('crew routes', () => {
     const body = (await res.json()) as { activity: { question: string; agent: string; tool?: string }[] }
     expect(body.activity.map((e) => e.question)).toEqual(['second', 'first'])
     expect(body.activity[0]).toMatchObject({ agent: 'nora', tool: 'check_attendance' })
+  })
+})
+
+describe('activity order', () => {
+  it('keeps one question in step order, with newer questions first', async () => {
+    const DB = memoryDb()
+    await recordActivity(
+      DB,
+      [
+        { agent: 'ava', action: 'Read the question', handoffTo: 'lena', ms: 0 },
+        { agent: 'lena', action: 'Looked up', tool: 'lookup_policy', ms: 5 },
+        { agent: 'ava', action: 'Wrote the answer', ms: 9 },
+      ],
+      'older',
+      '2026-10-19T00:00:00Z',
+    )
+    await new Promise((r) => setTimeout(r, 2))
+    await recordActivity(
+      DB,
+      [
+        { agent: 'ava', action: 'Read the question', handoffTo: 'nora', ms: 0 },
+        { agent: 'nora', action: 'Checked', tool: 'check_attendance', ms: 5 },
+        { agent: 'max', action: 'Passed it on', ms: 9 },
+      ],
+      'newer',
+      '2026-10-19T00:00:01Z',
+    )
+
+    const events = await getActivity(DB, 50)
+    expect(events.map((e) => `${e.question}:${e.agent}`)).toEqual([
+      'newer:ava',
+      'newer:nora',
+      'newer:max',
+      'older:ava',
+      'older:lena',
+      'older:ava',
+    ])
+  })
+})
+
+describe('demo traffic is tagged, never dropped', () => {
+  it('a demo- session sends demo:true to n8n, and still sends it', async () => {
+    const fetchImpl = vi.fn().mockResolvedValue({ ok: true, status: 200 })
+    const { notified, pending } = notifyEscalation(
+      'https://n8n.example/hook',
+      { event: 'escalation', person: 'P', role: 'R', question: 'q', sessionId: 'demo-1', at: 'now' },
+      fetchImpl,
+    )
+    await pending
+    expect(notified.channel).toBe('n8n')
+    expect(JSON.parse(String(fetchImpl.mock.calls[0]?.[1]?.body))).toMatchObject({ demo: true })
+  })
+
+  it('a normal session sends no demo field', async () => {
+    const fetchImpl = vi.fn().mockResolvedValue({ ok: true, status: 200 })
+    const { pending } = notifyEscalation(
+      'https://n8n.example/hook',
+      { event: 'escalation', person: 'P', role: 'R', question: 'q', sessionId: 's-1', at: 'now' },
+      fetchImpl,
+    )
+    await pending
+    expect(JSON.parse(String(fetchImpl.mock.calls[0]?.[1]?.body))).not.toHaveProperty('demo')
+  })
+
+  it('activity rows from a demo session carry demo:true', async () => {
+    const DB = memoryDb()
+    await recordActivity(DB, [{ agent: 'ava', action: 'Read the question', ms: 0 }], 'q', 'now', true)
+    await recordActivity(DB, [{ agent: 'ava', action: 'Read the question', ms: 0 }], 'q2', 'now', false)
+    const events = await getActivity(DB, 10)
+    expect(events.find((e) => e.question === 'q')?.demo).toBe(true)
+    expect(events.find((e) => e.question === 'q2')).not.toHaveProperty('demo')
   })
 })

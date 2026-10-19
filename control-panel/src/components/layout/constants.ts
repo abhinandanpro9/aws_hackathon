@@ -8,6 +8,7 @@ export const LAYOUT_TEXTS = {
     conversations: "Conversations",
     tours: "Tours",
   },
+  signedInChip: "Signed in as Rosa Delgado · Director (demo)",
   approvalsWaitingLabel: "waiting on you",
   signedInAs: (name: string, role: string): string => `${name}, ${role}`,
   connected: "Connected to the front desk",

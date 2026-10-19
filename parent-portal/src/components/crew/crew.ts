@@ -25,6 +25,10 @@ export function crewMember(id: string | undefined): CrewMember | undefined {
 
 export const CREW_TEXT = {
   stripLabel: "Front desk crew",
+  maskyUrl: "https://masky.ai/live/t-26-10-vz9d",
+  maskyTitle: "Ava, talking avatar by Masky",
+  maskyCaption: "Ava · live on Masky",
+  hearAva: "Hear Ava",
   timelineHeading: "How the crew handled this",
   voiceOn: "Crew voices on",
   voiceOff: "Crew voices off",
