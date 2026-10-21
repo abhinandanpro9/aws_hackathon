@@ -1,0 +1,660 @@
+{
+	"components": [
+		{
+			"id": "chat_1",
+			"provider": "chat",
+			"name": "Parent question",
+			"config": {
+				"hideForm": true,
+				"mode": "Source",
+				"parameters": {},
+				"type": "chat"
+			},
+			"ui": {
+				"position": {
+					"x": 20,
+					"y": 300
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "ava",
+			"provider": "agent_rocketride",
+			"name": "Ava (receptionist)",
+			"config": {
+				"instructions": [
+					"You are Ava, the receptionist at the Sunflower Grove preschool front desk. Read the parent's question and hand it to exactly one specialist: Lena for handbook and policy questions (hours, fees, meals, closures); Nora for illness and whether a child can attend today; Theo for enrollment and booking a tour; Max for anything sensitive (safety, custody, complaints, injuries, billing disputes) that needs a named person. When the specialist returns, write a short, kind answer for the parent. Only state facts the specialist returned, and cite each source it gave.  Always call a specialist; they call the front-desk tool. Pass on the specialist's answer and its citation EXACTLY as given, word for word. Never write, guess or renumber a source. If no citation came back, pass the answer on as given and say a staff member will confirm; never hand it on again. Call exactly one specialist, once. Copy the tool's `message` in full, word for word, including any staff name and phone number. Only write a 'Source:' line if the tool's `citation` field has text, and then copy it exactly. If `citation` is empty, write no source at all."
+				],
+				"max_waves": 6,
+				"parameters": {}
+			},
+			"ui": {
+				"position": {
+					"x": 260,
+					"y": 300
+				},
+				"measured": {
+					"width": 150,
+					"height": 86
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			},
+			"input": [
+				{
+					"lane": "questions",
+					"from": "chat_1"
+				}
+			]
+		},
+		{
+			"id": "ava_llm",
+			"provider": "llm_gemini",
+			"name": "Gemini for Ava",
+			"config": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
+					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "llm",
+					"from": "ava"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 180,
+					"y": 480
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "ava_memory",
+			"provider": "memory_internal",
+			"config": {
+				"type": "memory_internal"
+			},
+			"control": [
+				{
+					"classType": "memory",
+					"from": "ava"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 340,
+					"y": 480
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "response_1",
+			"provider": "response_answers",
+			"name": "Answer to parent",
+			"config": {
+				"laneName": "answers"
+			},
+			"input": [
+				{
+					"lane": "answers",
+					"from": "ava"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 520,
+					"y": 300
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "lena",
+			"provider": "agent_rocketride",
+			"name": "Lena (handbook)",
+			"config": {
+				"instructions": [
+					"You are Lena, the handbook keeper. Look up the policy that answers the question: POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask with JSON body {\"question\": \"<the parent's question>\"}. Return the answer text and every policy source from the response (the lookup_policy and get_center_facts steps). Never invent a policy. Always call the front-desk tool (POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask). Return its `message` and its `citation` EXACTLY as given, word for word. Never write, guess or renumber a source. If the tool returns no citation, say a staff member will confirm. Copy the tool's `message` in full, word for word, including any staff name and phone number. Only write a 'Source:' line if the tool's `citation` field has text, and then copy it exactly. If `citation` is empty, write no source at all."
+				],
+				"max_waves": 8,
+				"parameters": {}
+			},
+			"ui": {
+				"position": {
+					"x": 80,
+					"y": 660
+				},
+				"measured": {
+					"width": 150,
+					"height": 86
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "ava"
+				}
+			]
+		},
+		{
+			"id": "lena_llm",
+			"provider": "llm_gemini",
+			"name": "Gemini for Lena",
+			"config": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
+					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "llm",
+					"from": "lena"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 0,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "lena_memory",
+			"provider": "memory_internal",
+			"config": {
+				"type": "memory_internal"
+			},
+			"control": [
+				{
+					"classType": "memory",
+					"from": "lena"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 160,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "lena_http",
+			"provider": "tool_http_request",
+			"name": "Front desk API",
+			"config": {
+				"profile": "default",
+				"default": {
+					"allowGET": true,
+					"allowPOST": true,
+					"allowPUT": false,
+					"allowPATCH": false,
+					"allowDELETE": false,
+					"allowHEAD": false,
+					"allowOPTIONS": false,
+					"urlWhitelist": [
+						{
+							"whitelistPattern": "^https://awshk-frontdesk-api\\.abhinandan-pro9\\.workers\\.dev(?:/|$)"
+						}
+					]
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "lena"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 80,
+					"y": 980
+				},
+				"measured": {
+					"width": 150,
+					"height": 40
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "nora",
+			"provider": "agent_rocketride",
+			"name": "Nora (health)",
+			"config": {
+				"instructions": [
+					"You are Nora, the health lead. Check whether the child can attend: POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask with JSON body {\"question\": \"<the parent's question>\"}. Return the attendance decision from the check_attendance step and the health rule it cites. The rule decides, not you. Always call the front-desk tool (POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask). Return its `message` and its `citation` EXACTLY as given, word for word. Never write, guess or renumber a source. If the tool returns no citation, say a staff member will confirm. Copy the tool's `message` in full, word for word, including any staff name and phone number. Only write a 'Source:' line if the tool's `citation` field has text, and then copy it exactly. If `citation` is empty, write no source at all."
+				],
+				"max_waves": 8,
+				"parameters": {}
+			},
+			"ui": {
+				"position": {
+					"x": 420,
+					"y": 660
+				},
+				"measured": {
+					"width": 150,
+					"height": 86
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "ava"
+				}
+			]
+		},
+		{
+			"id": "nora_llm",
+			"provider": "llm_gemini",
+			"name": "Gemini for Nora",
+			"config": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
+					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "llm",
+					"from": "nora"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 340,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "nora_memory",
+			"provider": "memory_internal",
+			"config": {
+				"type": "memory_internal"
+			},
+			"control": [
+				{
+					"classType": "memory",
+					"from": "nora"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 500,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "nora_http",
+			"provider": "tool_http_request",
+			"name": "Front desk API",
+			"config": {
+				"profile": "default",
+				"default": {
+					"allowGET": true,
+					"allowPOST": true,
+					"allowPUT": false,
+					"allowPATCH": false,
+					"allowDELETE": false,
+					"allowHEAD": false,
+					"allowOPTIONS": false,
+					"urlWhitelist": [
+						{
+							"whitelistPattern": "^https://awshk-frontdesk-api\\.abhinandan-pro9\\.workers\\.dev(?:/|$)"
+						}
+					]
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "nora"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 420,
+					"y": 980
+				},
+				"measured": {
+					"width": 150,
+					"height": 40
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "theo",
+			"provider": "agent_rocketride",
+			"name": "Theo (tours)",
+			"config": {
+				"instructions": [
+					"You are Theo, enrollment and tours. Book or explain a tour: POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask with JSON body {\"question\": \"<the parent's question>\"}. Return the book_tour result: the time offered and what the parent should bring. Always call the front-desk tool (POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask). Return its `message` and its `citation` EXACTLY as given, word for word. Never write, guess or renumber a source. If the tool returns no citation, say a staff member will confirm. Copy the tool's `message` in full, word for word, including any staff name and phone number. Only write a 'Source:' line if the tool's `citation` field has text, and then copy it exactly. If `citation` is empty, write no source at all."
+				],
+				"max_waves": 8,
+				"parameters": {}
+			},
+			"ui": {
+				"position": {
+					"x": 760,
+					"y": 660
+				},
+				"measured": {
+					"width": 150,
+					"height": 86
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "ava"
+				}
+			]
+		},
+		{
+			"id": "theo_llm",
+			"provider": "llm_gemini",
+			"name": "Gemini for Theo",
+			"config": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
+					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "llm",
+					"from": "theo"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 680,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "theo_memory",
+			"provider": "memory_internal",
+			"config": {
+				"type": "memory_internal"
+			},
+			"control": [
+				{
+					"classType": "memory",
+					"from": "theo"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 840,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "theo_http",
+			"provider": "tool_http_request",
+			"name": "Front desk API",
+			"config": {
+				"profile": "default",
+				"default": {
+					"allowGET": true,
+					"allowPOST": true,
+					"allowPUT": false,
+					"allowPATCH": false,
+					"allowDELETE": false,
+					"allowHEAD": false,
+					"allowOPTIONS": false,
+					"urlWhitelist": [
+						{
+							"whitelistPattern": "^https://awshk-frontdesk-api\\.abhinandan-pro9\\.workers\\.dev(?:/|$)"
+						}
+					]
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "theo"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 760,
+					"y": 980
+				},
+				"measured": {
+					"width": 150,
+					"height": 40
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "max",
+			"provider": "agent_rocketride",
+			"name": "Max (escalation)",
+			"config": {
+				"instructions": [
+					"You are Max, escalation. Hand the question to a named person: POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask with JSON body {\"question\": \"<the parent's question>\"}. Return who it went to (person and role from the escalate_to_person step) and how they were told (the notified field). Always call the front-desk tool (POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/ask). Return its `message` and its `citation` EXACTLY as given, word for word. Never write, guess or renumber a source. If the tool returns no citation, say a staff member will confirm. Copy the tool's `message` in full, word for word, including any staff name and phone number. Only write a 'Source:' line if the tool's `citation` field has text, and then copy it exactly. If `citation` is empty, write no source at all."
+				],
+				"max_waves": 8,
+				"parameters": {}
+			},
+			"ui": {
+				"position": {
+					"x": 1100,
+					"y": 660
+				},
+				"measured": {
+					"width": 150,
+					"height": 86
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "ava"
+				}
+			]
+		},
+		{
+			"id": "max_llm",
+			"provider": "llm_gemini",
+			"name": "Gemini for Max",
+			"config": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
+					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "llm",
+					"from": "max"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 1020,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "max_memory",
+			"provider": "memory_internal",
+			"config": {
+				"type": "memory_internal"
+			},
+			"control": [
+				{
+					"classType": "memory",
+					"from": "max"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 1180,
+					"y": 840
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "max_http",
+			"provider": "tool_http_request",
+			"name": "Front desk API",
+			"config": {
+				"profile": "default",
+				"default": {
+					"allowGET": true,
+					"allowPOST": true,
+					"allowPUT": false,
+					"allowPATCH": false,
+					"allowDELETE": false,
+					"allowHEAD": false,
+					"allowOPTIONS": false,
+					"urlWhitelist": [
+						{
+							"whitelistPattern": "^https://awshk-frontdesk-api\\.abhinandan-pro9\\.workers\\.dev(?:/|$)"
+						}
+					]
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "max"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 1100,
+					"y": 980
+				},
+				"measured": {
+					"width": 150,
+					"height": 40
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		}
+	],
+	"source": "chat_1",
+	"project_id": "5f1c2a7e-3b4d-4e8f-9a01-6c2d8e4b7f13",
+	"viewport": {
+		"x": 0,
+		"y": 0,
+		"zoom": 1
+	},
+	"version": 1
+}

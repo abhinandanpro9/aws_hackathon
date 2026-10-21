@@ -1,0 +1,39 @@
+{
+  "name": "sunflower-grove-front-desk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx --env-file-if-exists=.env scripts/smoke-gemini.ts",
+    "dev": "tsx watch --env-file-if-exists=.env src/server/index.ts",
+    "dev:worker": "wrangler dev --local --port 8787",
+    "serve": "tsx --env-file-if-exists=.env src/server/index.ts",
+    "migrate:local": "wrangler d1 migrations apply awshk_frontdesk_state --local",
+    "migrate:remote": "wrangler d1 migrations apply awshk_frontdesk_state --remote",
+    "deploy": "wrangler deploy",
+    "check": "npm run typecheck && npm test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "AI Front Desk prototype - trust-first answering for an early education center",
+  "devDependencies": {
+    "@types/node": "^26.3.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^2.18.0",
+    "@hono/node-server": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "hono": "^4.13.4"
+  }
+}

@@ -1,0 +1,189 @@
+{
+	"components": [
+		{
+			"id": "chat_1",
+			"provider": "chat",
+			"name": "Parent question",
+			"config": {
+				"hideForm": true,
+				"mode": "Source",
+				"parameters": {},
+				"type": "chat"
+			},
+			"ui": {
+				"position": {
+					"x": 20,
+					"y": 300
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "quill",
+			"provider": "agent_rocketride",
+			"name": "Quill (curator)",
+			"config": {
+				"instructions": [
+					"You are Quill, the policy curator at the Sunflower Grove preschool. You receive a parent question the handbook could not answer. Draft one policy for it: POST https://awshk-frontdesk-api.abhinandan-pro9.workers.dev/api/curator/draft with JSON body {\"question\": \"<the question>\"}. The draft goes to the staff approval queue; nothing is published until a person approves it. Reply with the draft text, its labels, and that it is waiting for approval."
+				],
+				"max_waves": 4,
+				"parameters": {}
+			},
+			"ui": {
+				"position": {
+					"x": 260,
+					"y": 300
+				},
+				"measured": {
+					"width": 150,
+					"height": 86
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			},
+			"input": [
+				{
+					"lane": "questions",
+					"from": "chat_1"
+				}
+			]
+		},
+		{
+			"id": "quill_llm",
+			"provider": "llm_gemini",
+			"name": "Gemini for Quill",
+			"config": {
+				"profile": "custom",
+				"custom": {
+					"model": "gemini-3.5-flash-lite",
+					"modelTotalTokens": 1000000,
+					"apikey": "${ROCKETRIDE_GEMINI_KEY}"
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "llm",
+					"from": "quill"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 100,
+					"y": 480
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "quill_memory",
+			"provider": "memory_internal",
+			"config": {
+				"type": "memory_internal"
+			},
+			"control": [
+				{
+					"classType": "memory",
+					"from": "quill"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 260,
+					"y": 480
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "quill_http",
+			"provider": "tool_http_request",
+			"name": "Front desk API",
+			"config": {
+				"profile": "default",
+				"default": {
+					"allowGET": true,
+					"allowPOST": true,
+					"allowPUT": false,
+					"allowPATCH": false,
+					"allowDELETE": false,
+					"allowHEAD": false,
+					"allowOPTIONS": false,
+					"urlWhitelist": [
+						{
+							"whitelistPattern": "^https://awshk-frontdesk-api\\.abhinandan-pro9\\.workers\\.dev(?:/|$)"
+						}
+					]
+				},
+				"parameters": {}
+			},
+			"control": [
+				{
+					"classType": "tool",
+					"from": "quill"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 420,
+					"y": 480
+				},
+				"measured": {
+					"width": 150,
+					"height": 40
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "response_1",
+			"provider": "response_answers",
+			"name": "Draft waiting for approval",
+			"config": {
+				"laneName": "answers"
+			},
+			"input": [
+				{
+					"lane": "answers",
+					"from": "quill"
+				}
+			],
+			"ui": {
+				"position": {
+					"x": 520,
+					"y": 300
+				},
+				"measured": {
+					"width": 150,
+					"height": 66
+				},
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		}
+	],
+	"source": "chat_1",
+	"project_id": "8a3e6d21-9c47-4b5a-b2f0-1e7d3c9a5b64",
+	"viewport": {
+		"x": 0,
+		"y": 0,
+		"zoom": 1
+	},
+	"version": 1
+}

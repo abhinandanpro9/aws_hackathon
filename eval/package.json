@@ -1,0 +1,20 @@
+{
+  "name": "front-desk-eval",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "eval": "tsx --env-file-if-exists=../engine/.env run-eval.ts",
+    "eval:live": "tsx run-live.ts",
+    "baseline": "APPLY_BASELINE=1 tsx run-eval.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Eval harness for the Sunflower Grove AI Front Desk - does it answer safely, and does a change make it worse?",
+  "devDependencies": {
+    "@types/node": "^26.3.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "type": "module"
+}
